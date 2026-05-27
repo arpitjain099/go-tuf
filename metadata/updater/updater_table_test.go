@@ -725,7 +725,6 @@ func TestUnsafeRefreshTable(t *testing.T) {
 		defer repo.Cleanup()
 
 		repo.BumpVersion(metadata.ROOT)
-		repo.PublishRoot()
 
 		cfg, err := repo.GetUnsafeUpdaterConfig()
 		assert.NoError(t, err)
@@ -743,7 +742,6 @@ func TestUnsafeRefreshTable(t *testing.T) {
 		defer repo.Cleanup()
 
 		repo.BumpVersion(metadata.ROOT)
-		repo.PublishRoot()
 
 		// First, do a real refresh to populate the cache.
 		_, err := createAndRefresh(t, repo)
@@ -827,7 +825,6 @@ func TestMaxRootRotationsTable(t *testing.T) {
 
 	for repo.Simulator.MDRoot.Signed.Version < cfg.MaxRootRotations+3 {
 		repo.BumpVersion(metadata.ROOT)
-		repo.PublishRoot()
 	}
 
 	rootPath := filepath.Join(repo.MetadataDir, "root.json")
@@ -850,7 +847,6 @@ func TestTrustedRootExpiredRecoveryTable(t *testing.T) {
 	// Publish an expired root v2.
 	repo.SetExpired(metadata.ROOT)
 	repo.BumpVersion(metadata.ROOT)
-	repo.PublishRoot()
 
 	cfg, err := repo.GetUpdaterConfig()
 	assert.NoError(t, err)
@@ -864,7 +860,6 @@ func TestTrustedRootExpiredRecoveryTable(t *testing.T) {
 	// Now publish a fresh root v3 with a future expiry.
 	repo.Simulator.MDRoot.Signed.Expires = repo.Simulator.SafeExpiry
 	repo.BumpVersion(metadata.ROOT)
-	repo.PublishRoot()
 
 	up, err = New(cfg)
 	assert.NoError(t, err)
@@ -1047,7 +1042,6 @@ func TestMaxMetadataLengthsTable(t *testing.T) {
 
 			// Ensure there's a root v2 to fetch so RootMaxLength bites.
 			repo.BumpVersion(metadata.ROOT)
-			repo.PublishRoot()
 
 			cfg, err := repo.GetUpdaterConfig()
 			assert.NoError(t, err)
@@ -1120,7 +1114,6 @@ func TestDelegatesConsistentSnapshotTable(t *testing.T) {
 
 			repo.Simulator.MDRoot.Signed.ConsistentSnapshot = tc.consistentSnapshot
 			repo.BumpVersion(metadata.ROOT)
-			repo.PublishRoot()
 
 			// Register three delegated roles with distinctive names.
 			target := metadata.Targets(repo.Simulator.SafeExpiry)
