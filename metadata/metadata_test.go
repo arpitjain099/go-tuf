@@ -17,7 +17,6 @@
 
 package metadata
 
-
 import (
 	"bytes"
 	"crypto"
